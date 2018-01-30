@@ -1,0 +1,58 @@
+buildscript {
+	ext {
+		springBootVersion = '1.5.7.RELEASE'
+	}
+	repositories {
+		mavenCentral()
+	}
+	dependencies {
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+	}
+}
+
+apply plugin: 'java'
+apply plugin: 'maven-publish'
+apply plugin: 'eclipse'
+apply plugin: 'org.springframework.boot'
+
+jar {
+	baseName = 'common-swagger'
+	version = '0.0.1-SNAPSHOT'
+}
+
+task sourceJar(type: Jar) {
+	from sourceSets.main.allJava
+}
+
+
+publishing {
+	publications {
+		maven(MavenPublication) {
+			groupId 'com.oauthex.common.swagger'
+			artifactId 'common-swagger'
+			version "0.0.1-SNAPSHOT"
+
+			from components.java
+
+			artifact sourceJar {
+				classifier "sources"
+			}
+		}
+	}
+}
+group = 'com.oauthex.common.swagger'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = 1.8
+
+repositories {
+	mavenCentral()
+}
+
+
+dependencies {
+	compile ('io.springfox:springfox-swagger2:2.6.1')
+	compile ('io.springfox:springfox-swagger-ui:2.6.1')
+	compile 'org.springframework.boot:spring-boot-starter-web'
+
+	testCompile('org.springframework.boot:spring-boot-starter-test')
+}
